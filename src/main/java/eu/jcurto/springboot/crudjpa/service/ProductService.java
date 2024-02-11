@@ -1,18 +1,18 @@
 package eu.jcurto.springboot.crudjpa.service;
 
-import eu.jcurto.springboot.crudjpa.entity.Product;
+import eu.jcurto.springboot.crudjpa.dto.ProductDTO;
 
 import java.util.List;
 import java.util.Optional;
 
 public interface ProductService {
     
-    List<Product> findAll();
+    List<ProductDTO> findAll();
 
-    Optional<Product> findById(Long id);
+    Optional<ProductDTO> findById(Long id);
 
-    Product save(Product product);
+    ProductDTO save(ProductDTO product);
 
-    Optional<Product> deleteById(Long id);
+    Optional<ProductDTO> deleteById(Long id);
 
 }

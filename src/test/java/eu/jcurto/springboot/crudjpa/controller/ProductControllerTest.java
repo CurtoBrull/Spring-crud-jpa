@@ -1,6 +1,6 @@
 package eu.jcurto.springboot.crudjpa.controller;
 
-import eu.jcurto.springboot.crudjpa.entity.Product;
+import eu.jcurto.springboot.crudjpa.dto.ProductDTO;
 import eu.jcurto.springboot.crudjpa.service.ProductService;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
@@ -19,77 +19,80 @@ import static org.mockito.Mockito.when;
 class ProductControllerTest {
 
     @Test
-    void list() {
+    void listTest() {
         ProductService productService = mock(ProductService.class);
         ProductController productController = new ProductController(productService);
 
-        List<Product> expectedProducts = new ArrayList<>();
-        expectedProducts.add(new Product(1L, "Product 1", "Description 1", 10));
-        expectedProducts.add(new Product(2L, "Product 2", "Description 2", 20));
-        expectedProducts.add(new Product(3L, "Product 3", "Description 3", 30));
+        List<ProductDTO> expectedProducts = new ArrayList<>();
+        expectedProducts.add(ProductDTO.builder().id(1L).name("Product 1").description("Description 1").price(10).build());
+        expectedProducts.add(ProductDTO.builder().id(2L).name("Product 2").description("Description 2").price(20).build());
+        expectedProducts.add(ProductDTO.builder().id(3L).name("Product 3").description("Description 3").price(30).build());
 
         when(productService.findAll()).thenReturn(expectedProducts);
 
-        List<Product> actualProducts = productController.list();
+        List<ProductDTO> actualProducts = productController.list();
 
         assertEquals(expectedProducts, actualProducts);
     }
 
     @Test
-    void productById() {
+    void productByIdTest() {
         ProductService productService = mock(ProductService.class);
         ProductController productController = new ProductController(productService);
 
-        Product expectedProduct = new Product(1L, "Product 1", "Description 1", 10);
+        ProductDTO expectedProductDTO = ProductDTO.builder().id(1L).name("Product 1").description("Description 1").price(10).build();
 
-        when(productService.findById(1L)).thenReturn(Optional.of(expectedProduct));
+        when(productService.findById(1L)).thenReturn(Optional.of(expectedProductDTO));
 
-        Product actualProduct = productController.productById(1L).getBody();
+        ProductDTO actualProductDTO = productController.productById(1L).getBody();
 
-        assertEquals(expectedProduct, actualProduct);
+        assertEquals(expectedProductDTO, actualProductDTO);
     }
 
     @Test
-    void createProduct() {
+    void createProductTest() {
         ProductService productService = mock(ProductService.class);
         ProductController productController = new ProductController(productService);
 
-        Product product = new Product();
-        product.setId(1L);
-        product.setName("Test Product");
-        product.setDescription("Test Description");
-        product.setPrice(10);
+        ProductDTO productDTO = ProductDTO.builder()
+                .id(1L)
+                .name("Test Product")
+                .description("Test Description")
+                .price(10)
+                .build();
 
-        when(productService.save(any(Product.class))).thenReturn(product);
+        when(productService.save(any(ProductDTO.class))).thenReturn(productDTO);
 
-        ResponseEntity<Product> response = productController.createProduct(product);
+        ResponseEntity<ProductDTO> response = productController.createProduct(productDTO);
 
         assertNotNull(response);
         assertNotNull(response.getBody());
-        assertEquals(product.getId(), response.getBody().getId());
+        assertEquals(productDTO.getId(), response.getBody().getId());
     }
 
     @Test
-    void updateProduct() {
+    void updateProductTest() {
         ProductService productService = mock(ProductService.class);
         ProductController productController = new ProductController(productService);
 
-        Product originalProduct = new Product();
-        originalProduct.setId(1L);
-        originalProduct.setName("Original Product");
-        originalProduct.setDescription("Original Description");
-        originalProduct.setPrice(10);
+        ProductDTO originalProduct = ProductDTO.builder()
+                .id(1L)
+                .name("Original Product")
+                .description("Original Description")
+                .price(10)
+                .build();
 
-        Product updatedProduct = new Product();
-        updatedProduct.setId(1L);
-        updatedProduct.setName("Updated Product");
-        updatedProduct.setDescription("Updated Description");
-        updatedProduct.setPrice(20);
+        ProductDTO updatedProduct = ProductDTO.builder()
+                .id(1L)
+                .name("Updated Product")
+                .description("Updated Description")
+                .price(20)
+                .build();
 
         when(productService.findById(1L)).thenReturn(Optional.of(originalProduct));
-        when(productService.save(any(Product.class))).thenReturn(updatedProduct);
+        when(productService.save(any(ProductDTO.class))).thenReturn(updatedProduct);
 
-        ResponseEntity<Product> response = productController.updateProduct(updatedProduct, 1L);
+        ResponseEntity<ProductDTO> response = productController.updateProduct(updatedProduct, 1L);
 
         assertNotNull(response);
         assertNotNull(response.getBody());
@@ -101,19 +104,20 @@ class ProductControllerTest {
     }
 
     @Test
-    void updateProductNotFound() {
+    void updateProductNotFoundTest() {
         ProductService productService = mock(ProductService.class);
         ProductController productController = new ProductController(productService);
 
-        Product updatedProduct = new Product();
-        updatedProduct.setId(1L);
-        updatedProduct.setName("Updated Product");
-        updatedProduct.setDescription("Updated Description");
-        updatedProduct.setPrice(20);
+        ProductDTO updatedProduct = ProductDTO.builder()
+                .id(1L)
+                .name("Updated Product")
+                .description("Updated Description")
+                .price(20)
+                .build();
 
         when(productService.findById(1L)).thenReturn(Optional.empty());
 
-        ResponseEntity<Product> response = productController.updateProduct(updatedProduct, 1L);
+        ResponseEntity<ProductDTO> response = productController.updateProduct(updatedProduct, 1L);
 
         assertNotNull(response);
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
@@ -121,20 +125,20 @@ class ProductControllerTest {
     }
 
     @Test
-    void deleteProduct() {
+    void deleteProductTest() {
         ProductService productService = mock(ProductService.class);
-
         ProductController productController = new ProductController(productService);
 
-        Product productToDelete = new Product();
-        productToDelete.setId(1L);
-        productToDelete.setName("Test Product");
-        productToDelete.setDescription("Test Description");
-        productToDelete.setPrice(10);
+        ProductDTO productToDelete = ProductDTO.builder()
+                .id(1L)
+                .name("Test Product")
+                .description("Test Description")
+                .price(10)
+                .build();
 
         when(productService.deleteById(1L)).thenReturn(Optional.of(productToDelete));
 
-        ResponseEntity<Product> response = productController.deleteProduct(1L);
+        ResponseEntity<ProductDTO> response = productController.deleteProduct(1L);
 
         assertNotNull(response);
         assertEquals(HttpStatus.OK, response.getStatusCode());
