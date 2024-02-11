@@ -14,3 +14,10 @@ En este caso creamos una API con Spring usando **Modelo Vista Controlador** aunq
 7. Creamos unos tests básicos para comprobar los métodos de la implementación
 8. Creamos el controlador para desarrollar la lógica de los métodos CRUD
 9. Creamos los tests del controlador para no olvidarnos de las buenas prácticas
+10. Finalmente, usaremos un DTO para no usar directamente el objeto entity por lo que modificamos las clases para reflejar esos cambios.
+
+## Swagger UI
+
+Podemos usar la dependencia springdoc para ver la documentacion de la API via web añadiendo **/swagger-ui.html** a la URL.
+
+Por ejemplo, en el caso de usar la app en local la ruta http://localhost:8080/swagger-ui.html 
