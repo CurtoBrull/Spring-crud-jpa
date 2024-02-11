@@ -20,4 +20,35 @@ En este caso creamos una API con Spring usando **Modelo Vista Controlador** aunq
 
 Podemos usar la dependencia springdoc para ver la documentacion de la API via web añadiendo **/swagger-ui.html** a la URL.
 
-Por ejemplo, en el caso de usar la app en local la ruta http://localhost:8080/swagger-ui.html 
+Por ejemplo, en el caso de usar la app en local la ruta http://localhost:8080/swagger-ui.html
+
+![img.png](src/main/resources/img/swagger-ui.png)
+
+
+## Rutas API
+
+- GET listar productos: 
+
+    **/api/products/list**
+
+![img.png](src/main/resources/img/list.png)
+- GET listar producto por id: 
+
+    **/api/products/product/{id}**
+
+![img_1.png](src/main/resources/img/list_id.png)
+- POST crear producto:
+
+    **/api/products/create**
+
+![img_2.png](src/main/resources/img/create.png)
+- PUT modificar poducto: 
+
+    **/api/products/update/{id}**
+
+![img_3.png](src/main/resources/img/update.png)
+- DELETE borrar producto por id: 
+
+    **/api/products/delete/{id}**
+
+![img_4.png](src/main/resources/img/delete.png)
